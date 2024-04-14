@@ -1,4 +1,5 @@
 # ОБЪЕКТЫ В ПИТОНE
+import copy
 
 # 1. В питоне, переменные не хранят значения, они ссылаются на объекты, которые хранят значения.
 # 2. Момент когда мы присваиваем значение переменной называется ДИНАМИЧЕСКОЙ ТИПИЗАЦИЕЙ, тк именно тогда определяется тип
@@ -508,12 +509,12 @@
 # lst_in = ['8 11 -5', '3 4 10', '-1 -2 3', '4 5 6']
 # m = [[int(i) for i in x.split()] for x in lst_in]
 # print(m)
-
+#
 # 4.2 генератор в map # тут еще [*map] = list()
 # lst_in = ['8 11 -5', '3 4 10', '-1 -2 3', '4 5 6']
 # m = [*map(lambda x: [int(i) for i in x.split()], lst_in)]
 # print(m)
-
+#
 # 4.3 map()  в генераторе
 # lst_in = ['8 11 -5', '3 4 10', '-1 -2 3', '4 5 6']
 # m = [[*map(int, x.split())] for x in lst_in]
@@ -807,7 +808,7 @@
 # print(a)
 
 # -------------------------------------------------------------------------------------------------------------------- #
-# SET / МНОЖЕСТВО
+# SET / МНОЖЕСТВА
 # неупорядоченная коллекция уникальных элементов, по которой можно итерироваться
 # в set можно записать только неизменяемые типы данных. List / dict - нельзя
 # Так как множества - это неупорядоченная коллекция - нельзя обратиться по индексу типа a[0] не сработает
@@ -857,6 +858,15 @@
 #
 # print({1, 2, 3} < {1, 2, 3})     # False
 # print({1, 2, 3} < {1, 2, 3, 4})  # True
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# FROZEN SET
+# frozenset - неизменяемый объект, что означает, что после создания нельзя добавить или удалить элементы.
+
+# frozenset - полезен, когда требуется неизменяемое множество
+# которое можно использовать в качестве ключа в словарях или как элемент другого множества.
+
+# print(frozenset([1, 2, 3, 4, 4, 4]))
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # ГЕНЕРАТОРЫ
@@ -1837,10 +1847,10 @@
 # если при выполнении функции - True значение вернется, если False - ничего не вернет и пойдет дальше
 
 # задача: вывести только четные значения
-lst = [1, 2, 3, 4, 5, 6]
-f = filter(lambda x: x % 2 == 0, lst)
-print(*f)
-print(f)
+# lst = [1, 2, 3, 4, 5, 6]
+# f = filter(lambda x: x % 2 == 0, lst)
+# print(*f)
+# print(f)
 
 # задача: вернуть простые числа
 # def get_simple_value(x):
@@ -1984,8 +1994,55 @@ print(f)
 # print(get_list_dig([1, 2, '3']))
 #
 # # -------------------------------------------------------------------------------------------------------------------- #
+# ОПЕРАТОР IS И СРАВНЕНИЕ ОБЪЕКТОВ. В ЧЕМ РАЗНИЦА?
+# a = 5
+# b = 5
+
+# # Оператор сравнения сравнивает именно значения объектов
+# print(a == b) # True
 #
+# # is - сравнивает ссылки
+# print(a is b)
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# TRY / EXCEPT
+
+# есть два типа ошибок - при компиляции, и в момент исполнения
+# при компиляции - означает, что где-то неправильно написан код в плане местоположения, лишний отступ и тп
+# в момент исполнения - это разного рода ошибки, с именами типа: ValueError
+
+# try:
+#     x, y = 1, 0
+#     res = x / y
 #
+# # сначала прописываются блок со специализированными исключениями
+# except FileNotFoundError:
+#     print('первый except')
+# except ZeroDivisionError:
+#     print('второй except')
+# except (FileNotFoundError, ZeroDivisionError):
+#     print('общий except')
+#
+# # обширные исключения
+# except Exception:
+#     print('общий except')
+#
+# # отработает, если не было except
+# else:
+#     print('good')
+#
+# # будет отрабатывать всегда, даже если будет except
+# finally:
+#     print('Буду отрабатывать всегда, даже если будет except')
+#
+# # даже если отработал except программа будет работать дальше
+# print('END')
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# RAISE
+# raise принудительно вызывает исключение. Можно вызвать только те, что наследуются от BaseException
+# raise ZeroDivisionError('деление на нул')
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # ЗАДАЧКИ
 
@@ -2227,11 +2284,404 @@ print(f)
 # -------------------------------------------------------------------------------------------------------------------- #
 
 
+# def get_first_matching_object(predicate, elements=None):
+#     if elements is None:
+#         elements = []
+#
+#     matching_objects = (elem for elem in elements if predicate(elem))
+#     if matching_objects:
+#         next(matching_objects)
+#
+#     else:
+#         return None
+#
+# def temp(a):
+#     return type(a) == int
+#
+# d = get_first_matching_object(temp, [1, '2', '3'])
+# print(d)
 
 
+# x = 1
+# def gg(var):
+#     var = x
+#     var += 1
+#     print(var)
+#
+# print(x)
+#
+# gg(x)
+#
+# lst = [1, 2, 3]
+#
+# def gg(var):
+#     var = lst
+#     var[0] = 100
+#     print(var)
+#     return var
+#
+# print(lst)
+#
+# lst = gg(lst)
+#
+#
+# def get_first_matching_object(predicate, objects=None):
+#     # if objects is None:
+#     #     elements = []
+#
+#     if objects is None:
+#         objects = []
+#
+#     matching_objects = (obj for obj in objects if predicate(object))
+#     if matching_objects:
+#         object = matching_objects[0]
+#         return object
+#     else:
+#         return None
+
+# # можно ли добавить в сет
+# t = (1, [], 3)
+# print(t[1].append(0))
+# print(t)
+#
+# # лист компр
+# compr_l = [i for i in range(5) if i & 1 == 0]
+# compr_s = {i for i in range(5) if i & 1 == 0}
+# compr_d = {i: i ** 2 for i in range(5)}
+# print(compr_d)
+#
+# # сравнение is и ==
+# a = [1, 2, 3]
+# b = [1, 2, 3]
+#
+# print(a == b) # True (сравнивает значение)
+# print(a is b) # False (сравнивает ссылки)
+#
+# a = b = [1, 2, 3] # ведут на один объект
+# print(a is b) # False
 
 
+# # deep / shallow copy
+# # bad copy:
+# a = [1, [2]]
+#
+# b = a
+# b.append(3)
+# b[1].append(4)
+#
+# print(a) # [1, [2, 4], 3]
+#
+# # shallow:
+# a = [1, [2]]
+#
+# b = copy.copy(a)
+# b.append(3)
+# b[1].append(4)
+#
+# print(a) # [1, [2, 4]]
+#
+# # deep:
+# a = [1, [2]]
+#
+# b = copy.deepcopy(a)
+# b.append(3)
+# b[1].append(4)
+#
+# print(a) # [1, [2]]
+#
+# # еще способы для поверхностной копии
+# a = [1, [2]]
+#
+# import copy.copy
+# b = list(a)
+# b = a[:]
+# b = [i for i in a]
+# b = a.copy()
 
+# # Как работают операторы AND, OR, NOT? Что они возвращают?
+# # not
+# print(not []) # True
+# print(not [1, 2, 3]) # False
+#
+# # and и or возвращают не бул, а сам объект
+#
+# # если первый операнд = True - возвращает второй операнд
+# # если False - возвращает первый
+# print([] and 123) # []
+# print([1] and 123) # 123
+#
+# # у or наоборот, если первый - false - вернет второй
+# # если true - вернет его
+# print([] or 123) # 123
+# print([1] or 123) # [1]
+
+# # LEGB
+# str = 'global'
+#
+# def outer():
+#     str = 'enclosing' # если будет коммент будет искать в global
+#
+#     def inner():
+#         str = 'local' # если будет коммент будет искать в enclosing
+#         print(str)
+#
+#     inner()
+#
+# outer()
+
+# # анотации типов
+# def some(a: int) -> int:
+#     return a ** 2
+#
+# print(some('a')) # подчеркивает ide
+# print(some(1.4)) # подчеркивает, но схавает
+# print(some(4)) # все гут
+
+# # передача аргументов в функцию
+# a = [1, 2, 3]
+#
+# def some(arg):
+#     print(arg is a) # True
+#     # доказываем тем самым, что по ссылке
+#
+# print(some(a))
+
+# # Использование изм. типа в качетсве аргумента
+# # когда пайтон читает код, доходит до сигнатуры функции some
+# # и читает аргументы этой функции. Там есть пустой список.
+# # Он вычисляет его не когда мы ее вызываем, а когда эта функция
+# # подготавливается к выполнению
+#
+# # те когда он первый раз доходит до some - читает параметр,
+# # запоминает его, и в последующем работает всегда с ним
+# # те не будет создавать каждый раз, а только один
+# def some(a=[]):
+#     a.append(1)
+#     return a
+#
+# print(some()) # положит в уже созданный a [1]
+# print(some([])) # тк передаем пустой - берет именно его [1]
+# print(some())   # неожиданное поведение [1, 1] тк использует дефолтный а
+# print(some([]))
+#
+# # как избежать
+# def some(a=None):
+#     if a is None:
+#         a = []
+#
+#     a.append(1)
+#     return a
+
+# Что такое *args и **kwargs?
+# def some(*args, **kwargs):
+#     print(locals())  # {'args': (1, 2, 3), 'kwargs': {'a': 4, 'b': 5, 'c': 6}}
+#
+# some(1, 2, 3, a=4, b=5, c=6)
+
+# Что такое lambda функция?
+# d = {
+#     1: 3,
+#     2: 2,
+#     3: 3
+# }
+#
+# print(max(d)) # выведет макс ключ
+# print(max(d, key=lambda x: d[x])) # выведет макс значение
+
+# # рекурсия и цикл
+#
+# def factorial(n):
+#     if n == 1:
+#         return n
+#     else:
+#         return n * factorial(n - 1)
+#
+# def factorial2(n):
+#     num = 1
+#     while n >= 1:
+#         num *= n
+#         n -= 1
+#
+#     return num
+#
+# print(factorial(5)) # 120
+# print(factorial2(5))
+#
+# import sys
+# print(sys.getrecursionlimit())
+# sys.setrecursionlimit(2000)
+
+
+# демонстрация методов объекта
+# class Person:
+#     def __init__(self, name):
+#         self.name = name
+#
+#     def say_hi(self):
+#         return print(f'hello, {self.name}')
+#
+# p = Person('Ararat')
+# p.say_hi()
+
+# демонстрация методов класса
+# class Person:
+#     work_place = 'My company'
+#
+#     @classmethod
+#     def get_my_work_place(cls):
+#         return cls.work_place
+#
+# print(Person.get_my_work_place())
+#
+# p = Person()
+# print(p.get_my_work_place())
+
+# демонстрация статического метода
+# from datetime import datetime
+#
+# class A:
+#     @staticmethod
+#     def get_time():
+#         return datetime.now()
+#
+# print(A.get_time()) # можно вызывать из класса
+# a = A()
+# print(a.get_time()) # можно из объектов класса
+
+# доступ к приватному атрибуту
+# class A:
+#     __private = 1
+#
+# a = A()
+# print(a._A__private) # 1
+# a._A__private = 3
+# print(a._A__private) # 3
+
+# зачем нужен проперти
+# class Person:
+#     first_name: str
+#     last_name: str
+#
+#     def __init__(self, first_name: str, last_name: str):
+#         self.first_name = first_name
+#         self.last_name = last_name
+#
+#     @property
+#     def full_name(self):
+#         return f'{self.first_name} {self.last_name}'
+#
+#     @full_name.setter
+#     def full_name(self, value):
+#         name_surname = value.split(' ')
+#         self.first_name = name_surname[0]
+#         self.last_name = name_surname[1]
+#
+# p = Person('Egor', 'Pshelkin')
+# print(p.full_name)
+#
+# p.full_name = 'Name Surname'
+# print(p.first_name)
+# print(p.last_name)
+
+# абстрактный класс
+# from abc import ABC, abstractmethod
+#
+# class Animal(ABC):
+#     @abstractmethod
+#     def say_something(self):
+#         pass
+#
+# # a = Animal() # error
+#
+# class Cat(Animal):
+#     def say_something(self):
+#         return f'Мяу'
+#
+# c = Cat() # создаст объект тк переопределен абстрактный метод
+
+
+# сравнение str и repr
+# class Cat:
+#     def __init__(self, name):
+#         self.name = name
+#
+#     # вызовется если нет str
+#     def __repr__(self):
+#         return f"Cat(name)='{self.name}"
+#
+#     # вызовется только он
+#     def __str__(self):
+#         return f"Cat(name)='{self.name}"
+#
+# c = Cat('Marsik')
+# print(c)
+
+# зачем нужен super
+# class A:
+#     def __init__(self, a):
+#         self.a = a
+#
+# class B:
+#     def __init__(self, a, b):
+#         super().__init__(a)
+#         self.b = b
+
+# композиция и наследование
+# class A:
+#     pass
+#
+# # берем весь функционал A
+# class B(A):
+#     pass
+#
+# # берем нужную часть класса
+# class D:
+#     a = A()
+
+# замыкание
+# def add_number(a):
+#     def add(b):
+#         return a + b
+#
+#     return add
+#
+# # запомнит, что в a лежит 5
+# add_five = add_number(5)
+#
+# print(add_five(3)) # выведет 8
+
+# итератор из коллекции
+# lst = [1, 2, 3]
+# my_iter = iter(lst)
+# print(next(my_iter)) # 1
+# print(next(my_iter)) # 2
+
+# несколько yeild
+# def some():
+#     yield 1
+#     yield 2
+#     yield 3
+#
+# # создаем объект генератора
+# s = some()
+# # стартуем, попадаем в 1 yield
+# print(next(s)) # выведет 1, запомнит точку
+# print(next(s)) # выведет 2, запомнит точку
+# print(next(s)) # выведет 3
+
+
+# def a():
+#     yield 1
+#     yield 1
+#
+# def b():
+#     yield from a()
+#     yield 2
+#     yield 2
+#
+# b = b()
+# for i in b:
+#     print(i)
 
 
 
